@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0b0a" />
+  <meta name="description" content="星火航迹——以空中航迹、时间坐标与交互叙事重访长征精神。" />
+  <title>星火航迹｜长征精神交互叙事</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <canvas id="atmosphere" aria-hidden="true"></canvas>
+
+  <div class="boot" id="boot" role="dialog" aria-modal="true" aria-label="进入星火航迹">
+    <div class="boot__grid"></div>
+    <div class="boot__inner">
+      <div class="boot__eyebrow">LONG MARCH / AERIAL ARCHIVE</div>
+      <div class="boot__mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h1>星火<br /><em>航迹</em></h1>
+      <p>一次由你驱动的历史航行</p>
+      <button class="boot__enter magnetic" id="enterSite">
+        <span>进入航迹</span><i>↗</i>
+      </button>
+      <small>建议佩戴耳机 · 支持键盘方向键</small>
+    </div>
+    <div class="boot__coordinates">25.831°N<br />115.415°E</div>
+  </div>
+
+  <header class="topbar" id="topbar">
+    <a href="#home" class="brand" aria-label="返回首页">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 31 16 20l7 7L39 9"/><path d="m31 9 8 0 0 8"/><circle cx="16" cy="20" r="3"/></svg>
+      <span>星火航迹<small>SPARK ROUTE</small></span>
+    </a>
+    <nav aria-label="主导航">
+      <a href="#route">航迹</a><a href="#spirit">精神坐标</a><a href="#relay">我的接力</a>
+    </nav>
+    <div class="topbar__status"><i></i> ARCHIVE ONLINE</div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero__media" aria-hidden="true"></div>
+      <div class="hero__contours" aria-hidden="true"></div>
+      <div class="hero__copy">
+        <div class="kicker reveal">1934—1936 / 一段改变方向的航迹</div>
+        <h2 class="reveal">万水千山<br /><span>不是背景</span><br />而是坐标</h2>
+        <p class="reveal">把历史从展板上取下，放回时间、地形与抉择之中。沿六个关键坐标，重新理解信念如何穿越九十年。</p>
+        <a class="cta magnetic reveal" href="#route"><span>启动历史回放</span><b>↓</b></a>
+      </div>
+      <div class="hero__telemetry" aria-label="项目概览">
+        <div><strong data-count="6">00</strong><span>关键坐标</span></div>
+        <div><strong data-count="5">00</strong><span>精神维度</span></div>
+        <div><strong>90<sup>th</sup></strong><span>胜利九十周年</span></div>
+      </div>
+      <div class="hero__scroll">SCROLL TO NAVIGATE <span></span></div>
+    </section>
+
+    <section class="prologue section-pad">
+      <div class="section-index">00 / 导航说明</div>
+      <div class="prologue__lead reveal">
+        <p>这不是一条用来“看完”的页面。</p>
+        <h2>你将成为航迹的<br /><em>观察者与接力者。</em></h2>
+      </div>
+      <div class="prologue__modes">
+        <article class="mode-card reveal">
+          <span>01</span><h3>自动讲述</h3><p>沿时间轴自动推进，镜头、路线、文字同步演绎，适合快速理解全篇。</p>
+        </article>
+        <article class="mode-card reveal">
+          <span>02</span><h3>自由探索</h3><p>点击坐标、拖动时间尺，自主查看每次关键抉择与对应精神维度。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="route-section" id="route">
+      <div class="route-stage">
+        <div class="route-stage__head">
+          <div><span class="section-index">01 / 历史航迹</span><h2>六个坐标，<em>一次远征</em></h2></div>
+          <div class="route-controls" role="group" aria-label="航迹播放控制">
+            <button id="playRoute" class="control primary" aria-pressed="false"><i>▶</i><span>自动讲述</span></button>
+            <button id="prevNode" class="control" aria-label="上一个节点">←</button>
+            <button id="nextNode" class="control" aria-label="下一个节点">→</button>
+          </div>
+        </div>
+
+        <div class="route-console">
+          <div class="map-panel" id="mapPanel">
+            <div class="map-panel__hud"><span>FLIGHT PATH / 1934—1936</span><b id="mapAltitude">ALT 164M</b></div>
+            <svg class="route-map" viewBox="0 0 900 620" role="img" aria-label="长征关键节点抽象航迹图">
+              <defs>
+                <filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M44 0H0V44" fill="none" stroke="rgba(255,255,255,.055)" stroke-width="1"/></pattern>
+              </defs>
+              <rect width="900" height="620" fill="url(#grid)"/>
+              <g class="terrain-lines" fill="none">
+                <path d="M20 510C150 420 230 560 350 470S560 360 690 440s130-20 190-60"/>
+                <path d="M-20 555C120 445 230 610 370 505S580 400 710 472s120-12 210-75"/>
+                <path d="M35 190C150 100 250 230 360 150S590 80 735 170s115 5 185-55"/>
+                <path d="M0 230C130 140 240 275 375 190S590 125 735 210s120 10 190-45"/>
+              </g>
+              <path id="routeShadow" class="route-shadow" d="M91 495 C170 460 180 375 245 390 S320 335 353 303 S465 358 518 285 S590 185 656 220 S740 150 806 94"/>
+              <path id="routePath" class="route-path" d="M91 495 C170 460 180 375 245 390 S320 335 353 303 S465 358 518 285 S590 185 656 220 S740 150 806 94"/>
+              <circle id="routePulse" class="route-pulse" r="6" cx="91" cy="495"/>
+              <g id="mapNodes"></g>
+            </svg>
+            <div class="map-panel__legend"><span><i class="legend-live"></i> 当前坐标</span><span><i></i> 历史节点</span><span>拖动 / 点击探索</span></div>
+          </div>
+
+          <article class="story-panel" id="storyPanel" aria-live="polite">
+            <div class="story-panel__num" id="storyNum">01</div>
+            <div class="story-panel__meta"><span id="storyDate">1934.11</span><span id="storyPlace">湘江</span></div>
+            <h3 id="storyTitle">血战湘江</h3>
+            <p class="story-panel__question" id="storyQuestion">当退路被截断，什么支撑一支队伍继续向前？</p>
+            <p id="storyBody">1934年11月27日至12月1日，中央红军苦战五昼夜渡过湘江。代价极其惨烈，也迫使队伍重新审视前进的方向。</p>
+            <div class="spirit-tag"><span>精神坐标</span><strong id="storySpirit">坚定信念</strong></div>
+            <div class="story-source"><span>史料来源</span><a id="storySource" href="https://www.ynds.yn.gov.cn/html/zhongyanghongjunqiaodujinshajiang/2022/7/8/5b39519c-6ff1-4dc6-9b61-042094bb13d7.html" target="_blank" rel="noreferrer">查看出处 ↗</a></div>
+          </article>
+        </div>
+
+        <div class="timeline" aria-label="航迹时间轴">
+          <div class="timeline__track"><div id="timelineProgress"></div></div>
+          <div class="timeline__nodes" id="timelineNodes"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="spirit section-pad" id="spirit">
+      <div class="spirit__intro">
+        <span class="section-index">02 / 精神坐标</span>
+        <h2 class="reveal">真正抵达终点的，<br />不只是队伍。</h2>
+        <p class="reveal">长征精神不是五个孤立标签，而是一套在不确定环境中持续作出正确选择的“精神导航系统”。移动指针，观察五种力量如何共同构成一次前进。</p>
+      </div>
+      <div class="spirit-lab reveal">
+        <div class="radar-wrap">
+          <canvas id="spiritRadar" width="620" height="620" aria-label="长征精神五维雷达图"></canvas>
+          <div class="radar-center"><span>SPIRIT</span><strong id="radarValue">信念</strong></div>
+        </div>
+        <div class="dimension-list" id="dimensionList"></div>
+      </div>
+    </section>
+
+    <section class="bridge">
+      <div class="bridge__line" aria-hidden="true"></div>
+      <div class="bridge__copy reveal">
+        <span>1936 → 2026</span>
+        <h2>历史从不要求我们<br />重复一条路，<br /><em>而是回答同一个问题。</em></h2>
+        <p>面对自己的“雪山”和“草地”，你准备把哪一种力量带到下一程？</p>
+      </div>
+    </section>
+
+    <section class="relay section-pad" id="relay">
+      <div class="relay__head">
+        <span class="section-index">03 / 青春接力</span>
+        <h2>生成你的<br /><em>下一程坐标</em></h2>
+      </div>
+      <div class="relay__workspace">
+        <form class="relay-form" id="relayForm">
+          <label>此刻，你最需要的精神力量</label>
+          <div class="choice-grid" id="choiceGrid"></div>
+          <label for="missionInput">写下一件准备真正完成的事</label>
+          <div class="input-wrap"><input id="missionInput" maxlength="28" placeholder="例如：完成一次真正属于自己的作品" required /><span><b id="charCount">0</b>/28</span></div>
+          <button type="submit" class="generate magnetic"><span>生成青春坐标</span><i>↗</i></button>
+          <p class="privacy-note">内容仅保存在当前浏览器，不上传服务器。</p>
+        </form>
+        <article class="coordinate-card" id="coordinateCard">
+          <div class="card-orbit" aria-hidden="true"></div>
+          <div class="card-top"><span>YOUTH ROUTE / 2026</span><b id="cardId">CZ-000000</b></div>
+          <div class="card-main">
+            <small>我的下一程</small>
+            <h3 id="cardMission">等待写入坐标</h3>
+            <div><span>携带精神</span><strong id="cardSpirit">坚定信念</strong></div>
+          </div>
+          <div class="card-bottom"><span>从今天出发</span><svg viewBox="0 0 120 32" aria-hidden="true"><path d="M3 25C25 2 42 29 61 12s35 2 56-8"/><circle cx="117" cy="4" r="3"/></svg></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="dossier section-pad">
+      <div>
+        <span class="section-index">04 / 作品档案</span>
+        <h2>每一次交互，<br />都有可解释的意义。</h2>
+      </div>
+      <div class="dossier__grid">
+        <article><span>01</span><h3>航迹叙事</h3><p>用空间与时间的同步变化解释历史因果，而不是简单陈列图文。</p></article>
+        <article><span>02</span><h3>双模式探索</h3><p>自动讲述降低理解门槛，自由探索保留用户主动性。</p></article>
+        <article><span>03</span><h3>生成式视觉</h3><p>粒子、雷达与航迹均由浏览器实时绘制，保持轻量与原创。</p></article>
+        <article><span>04</span><h3>本地化参与</h3><p>个人坐标只保存在本机，让精神传承从观看走向行动。</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="brand brand--footer"><svg viewBox="0 0 48 48"><path d="M5 31 16 20l7 7L39 9"/><path d="m31 9 8 0 0 8"/><circle cx="16" cy="20" r="3"/></svg><span>星火航迹<small>SPARK ROUTE</small></span></div>
+    <p>赓续长征精神 · 智创青春新程</p>
+    <div><a href="https://theory.people.com.cn/n1/2018/0103/c416126-29742909.html" target="_blank" rel="noreferrer">精神内涵来源</a><span>© 2026</span></div>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
