@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#120d0a" />
+  <title>万里·信仰之路｜长征数字展</title>
+  <meta name="description" content="以真实地点、历史叙事与沉浸声场重走长征之路。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="museum-mode">
+  <div class="arrival-transition" id="arrivalTransition" aria-hidden="true"><div><span>1934—1936</span><b>沿着长征路线，抵达历史现场</b></div></div>
+  <div class="cursor-light" aria-hidden="true"></div>
+  <section class="entry" id="entry" aria-label="进入展览">
+    <div class="entry-bg entry-fallback"></div><canvas class="entry-scene" id="entryScene" aria-hidden="true"></canvas><div class="entry-depth" aria-hidden="true"><span>江西 · 于都</span><i></i><span>陕北 · 会宁</span></div><div class="entry-compass" aria-hidden="true"><span>1934</span><i></i><span>1936</span></div>
+    <div class="entry-copy"><p class="eyebrow">THE LONG MARCH · 1934—1936</p><h1><span>万里</span><em>信仰之路</em></h1>
+      <p class="entry-lead">一次战略转移，一场穿越生死的远征。<br>沿着十一处历史坐标，听见八十多年前的风雪、江河与脚步。</p>
+      <div class="entry-actions"><button class="primary-btn" id="enterSound">开启声场 · 进入</button><button class="ghost-btn" id="enterSilent">静音进入</button></div><p class="entry-hint">声音将在点击后播放 · 可随时关闭</p>
+    </div><button class="entry-index" data-enter="silent"><b>11</b><span>处历史坐标</span></button>
+  </section>
+  <main class="exhibition" id="exhibition" aria-hidden="true">
+    <header class="topbar"><button class="brand" data-room="prologue" aria-label="返回序厅"><span>万里</span><i></i>信仰之路</button>
+      <nav class="main-nav" aria-label="展览导航"><button class="active" data-room="prologue"><span>01</span>序厅</button><button data-room="route"><span>02</span>征途全景</button><button data-room="archive"><span>03</span>历史现场</button><button data-room="decision"><span>04</span>抉择时刻</button><button data-room="legacy"><span>05</span>薪火接力</button><button data-room="finale"><span>06</span>终章</button></nav>
+      <div class="top-actions"><button class="icon-btn" id="sourceBtn">史料</button><button class="sound-btn" id="soundBtn"><span class="sound-bars"><i></i><i></i><i></i></span><b>声场</b></button><button class="menu-btn" id="menuBtn"><i></i><i></i></button></div>
+    </header>
+    <div class="room-stage">
+      <section class="room prologue-room active" id="room-prologue" data-room-name="prologue">
+        <div class="prologue-image"></div><div class="prologue-vignette"></div><div class="prologue-copy"><p class="eyebrow">中国工农红军长征 · 1934—1936</p><h2>他们走过的，<br><span>不只是二万五千里。</span></h2><p>从赣南出发，到陕北会师。饥饿、围追、江河、雪山与草地，都没能让这支队伍停止前进。长征不是一条抽象的红线，而是无数人在生死之间做出的选择。</p><button class="text-link" data-room="route">从于都出发 <span>→</span></button></div>
+        <div class="prologue-facts"><div><b data-count="12500">0</b><span>公里 · 中央红军长征里程约数</span></div><div><b data-count="15">0</b><span>纵横省份（传统概述）</span></div><div><b data-count="380">0</b><span>余次战斗</span></div><div><b data-count="18">0</b><span>座山脉</span></div></div><div class="room-number">01</div>
+      </section>
+      <section class="room route-room" id="room-route" data-room-name="route">
+        <div class="room-heading"><p class="eyebrow">ROUTE ATLAS · 点击坐标进入现场</p><h2>把每一步，放回真实山河</h2></div>
+        <div class="route-layout"><div class="map-board" id="mapBoard"><div class="route-map" id="routeMap" role="img" aria-label="长征关键地点真实世界地图"></div><div class="map-film" aria-hidden="true"></div><div class="map-title"><b id="mapPlace">于都</b><span>真实世界地图 · 经纬度定位</span></div><div class="map-legend"><span><i class="live"></i>当前地点</span><span><i></i>中央红军关键节点</span><em>底图 © OpenStreetMap · OpenFreeMap</em></div><div class="map-coordinate" id="mapCoordinate">25.95°N · 115.42°E</div></div><aside class="route-focus" id="routeFocus"></aside></div>
+        <div class="route-strip"><button class="strip-arrow" id="routePrev">←</button><div class="route-scroll" id="routeScroll"></div><button class="strip-arrow" id="routeNext">→</button></div>
+      </section>
+      <section class="room archive-room" id="room-archive" data-room-name="archive">
+        <div class="archive-head"><div><p class="eyebrow">ARCHIVE WALL · 影像有其年代</p><h2>历史现场，不止一种面貌</h2></div><p>历史照片、旧址今貌与影像复原分别标注。它们不是装饰，而是通向具体时间、人物与地点的入口。</p></div><div class="archive-wall" id="archiveWall"></div><div class="archive-progress"><i id="archiveProgress"></i></div>
+      </section>
+      <section class="room decision-room" id="room-decision" data-room-name="decision">
+        <div class="decision-bg" id="decisionBg"></div><div class="decision-shell"><div class="decision-intro"><p class="eyebrow">DECISION THEATRE · 把自己放进历史</p><h2>如果你站在<br>那个岔路口</h2><p>这里没有抽象的“精神数值”。只有情报不全、时间紧迫、伤亡真实的历史处境。先作出你的判断，再看当时的选择。</p><div class="scenario-tabs" id="scenarioTabs"></div></div><div class="decision-card" id="decisionCard"></div></div>
+      </section>
+      <section class="room legacy-room" id="room-legacy" data-room-name="legacy">
+        <div class="legacy-glow"></div><div class="legacy-copy"><p class="eyebrow">THE MARCH CONTINUES · 你的这一程</p><h2>长征永远在路上</h2><p>八十多年过去，长征精神不再只属于雪山与草地。先从一件真实信物出发，再写下你愿意带向下一程的力量。</p><div class="legacy-pulse" aria-label="长征精神的三个历史切面"><span><small>1934 · 出发</small><b>把选择交给信仰</b></span><span><small>1935 · 转折</small><b>把答案交给实践</b></span><span><small>1936 · 会师</small><b>把胜利交给人民</b></span></div><div class="relic-section"><span>选择一件长征信物</span><div class="relic-picks" id="relicPicks"></div><p id="relicStory"></p></div><div class="legacy-form"><label><span>写给下一程的自己</span><input id="legacyText" maxlength="24" placeholder="例如：在看不清终点时，仍走好下一步" /></label><div class="spirit-picks" id="spiritPicks"><button class="active" data-spirit="信仰">信仰</button><button data-spirit="求实">求实</button><button data-spirit="团结">团结</button><button data-spirit="担当">担当</button></div><button class="primary-btn" id="generateCard">生成我的长征坐标</button></div></div>
+        <div class="legacy-card-wrap"><div class="legacy-card" id="legacyCard"><div class="card-map"></div><div class="card-top"><span>LONG MARCH · 2026</span><b id="cardNumber">NO. 1934</b></div><div class="card-mark">征</div><div class="card-relic" id="cardRelic">草鞋 · 行路</div><div class="card-content"><small>我的精神坐标</small><h3 id="cardSpirit">信仰</h3><p id="cardText">在看不清终点时，仍走好下一步。</p></div><div class="card-bottom"><span>从历史深处出发</span><span id="cardDate">2026.10.22</span></div></div><button class="download-btn" id="downloadCard">↓ 下载纪念卡 PNG</button></div>
+      </section>
+      <section class="room finale-room" id="room-finale" data-room-name="finale"><div class="finale-backdrop" id="finaleBackdrop"></div><div class="finale-shade"></div><div class="finale-copy"><p class="eyebrow">EPILOGUE · 他们共同的名字</p><h2>一次远征，<br><span>改变中国革命的方向。</span></h2><p>长征保存和锻炼了中国共产党与红军的骨干力量，使中国革命转危为安；它把理想、纪律与人民的支持写进漫长道路，也为全民族抗战和中国革命的新局面保存了火种。</p><div class="finale-impact"><b>不是少数人的传奇</b><span>是领袖与战士、船工与群众、幸存者与无名牺牲者共同完成的历史。</span></div></div><div class="rollcall"><div class="roll-head"><span id="rollIndex">01 / 09</span><small>长征群像 · 自动轮播</small></div><div class="roll-stage" id="rollStage"></div><div class="roll-controls"><button id="rollPrev">←</button><i><em id="rollProgress"></em></i><button id="rollNext">→</button></div></div><div class="finale-quote"><span>“长征是宣言书，长征是宣传队，长征是播种机。”</span><small>—— 毛泽东，1935年</small></div><div class="finale-end">此程结束 · 精神仍在继续</div></section>
+    </div><div class="room-dots"><button class="active" data-room="prologue"></button><button data-room="route"></button><button data-room="archive"></button><button data-room="decision"></button><button data-room="legacy"></button><button data-room="finale"></button></div>
+  </main>
+  <aside class="detail-panel" id="detailPanel" aria-hidden="true"><button class="panel-close" id="panelClose">×</button><div class="detail-image"><img id="detailImage" alt=""><span id="detailImageType"></span><div class="detail-index" id="detailIndex"></div></div><div class="detail-body"><div class="detail-kicker"><span id="detailDate"></span><i></i><span id="detailCoord"></span></div><h2 id="detailTitle"></h2><p class="detail-subtitle" id="detailSubtitle"></p><blockquote id="detailLead"></blockquote><div class="detail-tabs" id="detailTabs"><button class="active" data-detail-tab="origin">事件全貌</button><button data-detail-tab="people">人物档案</button><button data-detail-tab="scene">现场还原</button><button data-detail-tab="impact">转折与影响</button></div><div class="detail-tabstage" id="detailTabStage"></div><div class="detail-footer"><a id="detailSource" target="_blank" rel="noopener">查看史料来源 ↗</a><div class="detail-nav"><button id="detailPrev">← 上一站</button><button id="detailNext">下一站 →</button></div></div></div></aside>
+  <aside class="source-panel" id="sourcePanel" aria-hidden="true"><button class="panel-close" id="sourceClose">×</button><p class="eyebrow">SOURCES · 史料依据</p><h2>让每一个坐标<br>有据可查</h2><p class="source-note">叙事依据党史、军史与纪念馆公开资料整理；路线坐标用于地理定位展示，标注为遗址或纪念地附近坐标。</p><div class="source-list" id="sourceList"></div></aside><div class="scrim" id="scrim"></div><canvas id="dissolveCanvas" class="dissolve-canvas" aria-hidden="true"></canvas><canvas id="cardCanvas" width="1200" height="1600" hidden></canvas>
+  <script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+  <script src="app.js"></script>
+  <script>if(sessionStorage.getItem('longMarchArrival')){sessionStorage.removeItem('longMarchArrival');const a=document.getElementById('arrivalTransition');a.classList.add('show');requestAnimationFrame(()=>requestAnimationFrame(()=>a.classList.add('reveal')));setTimeout(()=>a.remove(),2300)}else document.getElementById('arrivalTransition')?.remove();</script>
+</body>
+</html>

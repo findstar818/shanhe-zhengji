@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#100c0b"/><stop offset=".55" stop-color="#3a2119"/><stop offset="1" stop-color="#090706"/></linearGradient>
+    <radialGradient id="sun"><stop stop-color="#ffd994" stop-opacity=".92"/><stop offset=".18" stop-color="#ce5c39" stop-opacity=".56"/><stop offset="1" stop-color="#8c251b" stop-opacity="0"/></radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="9"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/><circle cx="1420" cy="390" r="350" fill="url(#sun)" filter="url(#soft)"/>
+  <path d="M0 790L210 660 430 725 690 540 940 700 1210 500 1490 650 1700 520 1920 670V1080H0Z" fill="#15100d"/>
+  <path d="M0 855L330 720 620 830 910 675 1240 805 1570 665 1920 815V1080H0Z" fill="#090706"/>
+  <g fill="#050403">
+    <path d="M1015 690c2-78 19-135 52-173l42 13 24 160 48 168H956z"/><circle cx="1077" cy="490" r="34"/>
+    <path d="M1160 710c5-91 27-148 67-175l40 15 17 160 47 153h-226z"/><circle cx="1239" cy="508" r="35"/>
+    <path d="M1292 723c7-76 26-124 59-151l42 10 20 142 53 142h-224z"/><circle cx="1365" cy="549" r="33"/>
+  </g>
+  <path d="M1090 540l210-165" stroke="#0b0806" stroke-width="13"/><path d="M1289 375l-44 7 26 36z" fill="#a63125"/>
+  <text x="105" y="950" fill="#e6c991" fill-opacity=".23" font-family="serif" font-size="118" letter-spacing="26">山河作证</text>
+  <text x="112" y="1014" fill="#e6c991" fill-opacity=".38" font-family="sans-serif" font-size="25" letter-spacing="12">THE MARCH CONTINUES</text>
+</svg>

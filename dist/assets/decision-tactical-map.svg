@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="paper" cx="70%" cy="38%" r="85%"><stop stop-color="#58422f"/><stop offset=".5" stop-color="#241a13"/><stop offset="1" stop-color="#090706"/></radialGradient>
+    <pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse"><path d="M52 0H0V52" fill="none" stroke="#d0b586" stroke-opacity=".08"/></pattern>
+    <filter id="blur"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#paper)"/><rect width="1920" height="1080" fill="url(#grid)"/>
+  <g fill="none" stroke="#d7c29b" stroke-opacity=".15" stroke-width="3">
+    <path d="M780 1020C820 850 700 700 860 580S980 310 1180 190s420 20 640-90"/>
+    <path d="M860 1080c-20-170 180-220 140-390s130-240 280-310 300-10 500-190"/>
+    <path d="M1080 1080c20-180 210-210 190-390s120-260 350-390"/>
+  </g>
+  <path d="M760 932C930 790 792 660 1000 560s100-210 316-278 258-96 480-72" fill="none" stroke="#b9382d" stroke-width="10" stroke-dasharray="18 14"/>
+  <g fill="#e0bd76"><circle cx="760" cy="932" r="11"/><circle cx="1000" cy="560" r="11"/><circle cx="1316" cy="282" r="11"/><circle cx="1796" cy="210" r="11"/></g>
+  <g filter="url(#blur)" fill="#a12720" opacity=".28"><circle cx="1050" cy="590" r="150"/><circle cx="1570" cy="270" r="100"/></g>
+  <g opacity=".34" fill="#050505"><path d="M1300 930c25-170 95-280 210-352 70-44 136-77 172-137 16 105 2 212-52 321l176 168z"/><circle cx="1516" cy="455" r="58"/></g>
+  <text x="1120" y="1000" fill="#e0cba4" fill-opacity=".26" font-family="serif" font-size="92" letter-spacing="18">抉择 · 行动 · 代价</text>
+</svg>
