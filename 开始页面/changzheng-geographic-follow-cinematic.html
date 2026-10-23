@@ -22,13 +22,13 @@
   button { font: inherit; }
   #experience { position: relative; width: 100%; height: 100%; min-height: 620px; isolation: isolate; background: radial-gradient(ellipse at 70% 42%, #24201c 0%, #11110f 38%, #080909 78%); overflow: hidden; }
   #scene { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; display: block; outline: none; }
-  #terrainMap { position:absolute; inset:0; z-index:0; width:100%; height:100%; background:#c8c1aa; }
-  #terrainMap .leaflet-tile-pane { filter:saturate(.82) contrast(1.06) brightness(.93); }
-  #terrainMap .leaflet-control-attribution { color:#4d473c; background:rgba(242,236,220,.82); font-size:9px; }
+  #terrainMap { position:absolute; inset:0; z-index:0; width:100%; height:100%; background:radial-gradient(ellipse at 55% 48%,#415044,#1b211c 72%); }
+  #terrainMap .leaflet-tile-pane { filter:saturate(.72) contrast(1.08) brightness(.82); }
+  #terrainMap .leaflet-control-attribution { color:#d6ccb8; background:rgba(18,20,17,.72); font-size:9px; }
   #terrainMap .leaflet-tooltip { border:1px solid rgba(126,72,49,.48); background:rgba(245,238,220,.92); color:#4b2c22; box-shadow:0 5px 18px rgba(32,24,17,.18); font:600 11px/1.2 "Microsoft YaHei",sans-serif; letter-spacing:.08em; }
   #terrainMap .leaflet-tooltip:before { border-top-color:rgba(245,238,220,.92); }
   .real-terrain-mode #scene, .real-terrain-mode .fallback-art, .real-terrain-mode .fallback-route { display:none !important; }
-  .real-terrain-mode .atmosphere { background:linear-gradient(90deg,rgba(8,9,8,.68) 0%,rgba(8,9,8,.45) 29%,rgba(8,9,8,.1) 57%,rgba(8,9,8,.03) 78%,rgba(8,9,8,.18) 100%),linear-gradient(180deg,rgba(5,6,6,.18),transparent 24%,transparent 76%,rgba(5,6,6,.34)); }
+  .real-terrain-mode .atmosphere { background:linear-gradient(90deg,rgba(8,9,8,.74) 0%,rgba(8,9,8,.47) 29%,rgba(8,9,8,.08) 57%,rgba(8,9,8,.02) 78%,rgba(8,9,8,.15) 100%),linear-gradient(180deg,rgba(5,6,6,.14),transparent 24%,transparent 76%,rgba(5,6,6,.28)); }
   .real-terrain-mode .grain { opacity:.035; }
   .real-terrain-mode #impactFlash { display:none; }
   .fallback-art { position: absolute; inset: 0; z-index: 0; background:
@@ -242,7 +242,7 @@
     <div class="route-map-head"><span>TOPOGRAPHIC ROUTE / 地形定位</span><strong>1934—1936</strong></div>
     <div class="route-map-frame"><div id="topoMap" role="img" aria-label="基于真实地理坐标的长征路线与地形图"></div></div>
     <div class="map-legend"><span><i></i>中央红军主要路线</span><span><i class="branch"></i>会师路线示意</span><span><i class="camera"></i>镜头所在位置</span></div>
-    <div class="route-map-source"><span>地形底图：OpenTopoMap / OpenStreetMap</span><a href="https://www.ccphistory.org.cn/shds/shhm/content/383e7ee8-064a-4e8f-8b36-1281ea34cbaf.html" target="_blank" rel="noreferrer">历史路线资料 ↗</a></div>
+    <div class="route-map-source"><span>卫星地形：Esri World Imagery · 经纬度路线</span><a href="https://www.ccphistory.org.cn/shds/shhm/content/383e7ee8-064a-4e8f-8b36-1281ea34cbaf.html" target="_blank" rel="noreferrer">历史路线资料 ↗</a></div>
   </aside>
   <div class="history-note">镜头沿历史路线主要节点连续推进；三维地形根据地理位置进行艺术化重构，非精确 DEM 高程模型。</div>
 
@@ -321,6 +321,14 @@ window.LONG_MARCH_VISUALS = [
   {src:'https://5b0988e595225.cdn.sohucs.com/images/20191224/91bb889b608543ba9cf3d39d70dde9ea.jpeg', alt:'红军战士会师题材黑白影像', type:'会师主题历史影像 · 原图具体地点未独立确认', credit:'搜狐历史图文', href:'https://www.sohu.com/picture/362495626', mode:'reunion'},
   {src:'https://d.ifengimg.com/q100/img1.ugc.ifeng.com/newugc/20210323/17/wemedia/cf062601a116b41cd279f218d3f13b282d560ba7_size496_w2000_h1412.jpg', alt:'宁夏将台堡红军长征会师纪念碑', type:'当代纪念地影像 · 非1936年现场照片', credit:'凤凰网', href:'https://ishare.ifeng.com/c/s/v002FTotf8pgXAl5N625BKwyP4Y0S2wfR3dzB5up5N27sDQ__', mode:'gold'}
 ];
+/* A historical image belongs to one chapter only. Reuse is a data error, never a fallback. */
+{
+  const assigned=new Set();
+  window.LONG_MARCH_VISUALS.forEach((visual,index)=>{
+    if(assigned.has(visual.src))throw new Error(`历史影像重复：第 ${index+1} 章`);
+    assigned.add(visual.src);
+  });
+}
 /* Start fetching every chapter image before the journey begins. This prevents the previous
    location's image from lingering while the next remote image is still arriving. */
 window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
@@ -339,39 +347,64 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
   const data=window.LONG_MARCH_GEO;
   if(!root||!node||!data||!window.L)return;
   root.classList.add('real-terrain-mode');
-  const map=L.map(node,{zoomControl:false,scrollWheelZoom:false,dragging:false,doubleClickZoom:false,touchZoom:false,keyboard:false,attributionControl:true,zoomSnap:.1,preferCanvas:true,fadeAnimation:false});
-  /* A neutral street layer sits underneath so a slow or missing terrain tile never leaves a blank square. */
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-    maxZoom:19,crossOrigin:true,attribution:'© OpenStreetMap contributors'
+  const map=L.map(node,{zoomControl:false,scrollWheelZoom:false,dragging:false,doubleClickZoom:false,touchZoom:false,keyboard:false,attributionControl:true,zoomSnap:.1,preferCanvas:true,fadeAnimation:true,zoomAnimation:true});
+  /* Esri World Imagery is a real satellite basemap without the dense province/city/county label layer. */
+  L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
+    maxZoom:18,crossOrigin:true,updateWhenIdle:false,keepBuffer:4,
+    attribution:'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'
   }).addTo(map);
-  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{
-    maxZoom:15,crossOrigin:true,
-    attribution:'© OpenStreetMap contributors, SRTM · Map style © OpenTopoMap (CC-BY-SA)'
-  }).addTo(map);
-  const latLngs=list=>list.map(point=>[point.lat,point.lon]);
-  const routeStyle={color:'#8f3028',weight:4.2,opacity:.94,lineCap:'round',lineJoin:'round'};
-  L.polyline(latLngs(data.main),routeStyle).addTo(map);
-  L.polyline(latLngs(data.second),{...routeStyle,color:'#b97935',weight:3.1,dashArray:'7 6'}).addTo(map);
-  L.polyline(latLngs(data.fourth),{...routeStyle,color:'#a34c35',weight:3.1,dashArray:'4 6'}).addTo(map);
   const chapterStops=[
-    {name:'于都',lat:25.95,lon:115.42,zoom:8.2},{name:'湘江战役',lat:25.30,lon:111.88,zoom:7.6},
-    {name:'遵义会议',lat:27.73,lon:106.93,zoom:8.1},{name:'四渡赤水',lat:28.58,lon:105.70,zoom:7.8},
-    {name:'泸定桥',lat:29.91,lon:102.23,zoom:8.0},{name:'夹金山·松潘草地',lat:31.80,lon:102.95,zoom:7.0},
-    {name:'吴起镇',lat:36.92,lon:108.18,zoom:7.8},{name:'甘孜会师',lat:31.62,lon:100.00,zoom:7.4},
-    {name:'会宁会师',lat:35.69,lon:105.05,zoom:8.0},{name:'将台堡会师',lat:35.90,lon:106.50,zoom:8.2}
+    {name:'于都',lat:25.95,lon:115.42,zoom:10.4},{name:'湘江战役',lat:25.30,lon:111.88,zoom:9.7},
+    {name:'遵义会议',lat:27.73,lon:106.93,zoom:10.5},{name:'四渡赤水',lat:28.58,lon:105.70,zoom:9.8},
+    {name:'泸定桥',lat:29.91,lon:102.23,zoom:10.6},{name:'夹金山·松潘草地',lat:31.80,lon:102.95,zoom:9.2},
+    {name:'吴起镇',lat:36.92,lon:108.18,zoom:10.0},{name:'甘孜会师',lat:31.62,lon:100.00,zoom:9.5},
+    {name:'会宁会师',lat:35.69,lon:105.05,zoom:10.2},{name:'将台堡会师',lat:35.90,lon:106.50,zoom:10.5}
   ];
   const marker=L.circleMarker([chapterStops[0].lat,chapterStops[0].lon],{radius:7,color:'#fff4d1',weight:2,fillColor:'#a7332b',fillOpacity:1}).addTo(map);
   marker.bindTooltip(chapterStops[0].name,{permanent:true,direction:'top',offset:[0,-8]}).openTooltip();
-  const all=latLngs(data.main).concat(latLngs(data.second),latLngs(data.fourth));
-  const journeyBounds=L.latLngBounds(all);
-  map.fitBounds(journeyBounds,{padding:[42,42],animate:false});
-  window.__flyLongMarchMap=function(index){
-    const stop=chapterStops[Math.max(0,Math.min(chapterStops.length-1,index))];
-    marker.setLatLng([stop.lat,stop.lon]);
-    marker.unbindTooltip().bindTooltip(stop.name,{permanent:true,direction:'top',offset:[0,-8]}).openTooltip();
-    map.flyTo([stop.lat,stop.lon],stop.zoom,{duration:2.35,easeLinearity:.18,noMoveStart:true});
-  };
-  window.__showLongMarchMapOverview=function(){map.stop();map.fitBounds(journeyBounds,{padding:[46,46],animate:true,duration:1.6});};
+  const routeStyle={color:'#c64132',weight:4.2,opacity:.96,lineCap:'round',lineJoin:'round'};
+  const completedLine=L.polyline([[chapterStops[0].lat,chapterStops[0].lon]],routeStyle).addTo(map);
+  const activeLine=L.polyline([],{...routeStyle,color:'#f08a55',weight:5.2}).addTo(map);
+  const journeyBounds=L.latLngBounds(chapterStops.map(stop=>[stop.lat,stop.lon]));
+  let completedPoints=[[chapterStops[0].lat,chapterStops[0].lon]], currentIndex=0, travelToken=0, travelFrame=0;
+  function setMarkerLabel(text){marker.unbindTooltip().bindTooltip(text,{permanent:true,direction:'top',offset:[0,-8]}).openTooltip();}
+  function curvedLeg(from,to){
+    const points=[],steps=80,dx=to.lon-from.lon,dy=to.lat-from.lat,curve=Math.min(1.15,Math.hypot(dx,dy)*.055);
+    for(let i=0;i<=steps;i++){const t=i/steps,bend=Math.sin(Math.PI*t)*curve;points.push([from.lat+dy*t-bend*dx*.055,from.lon+dx*t+bend*dy*.055]);}
+    return points;
+  }
+  function resetJourneyMap(){
+    travelToken++;if(travelFrame)cancelAnimationFrame(travelFrame);map.stop();currentIndex=0;
+    completedPoints=[[chapterStops[0].lat,chapterStops[0].lon]];completedLine.setLatLngs(completedPoints);activeLine.setLatLngs([]);
+    const first=chapterStops[0];marker.setLatLng([first.lat,first.lon]);setMarkerLabel(first.name);
+    map.setView([first.lat,first.lon],7.6,{animate:false});
+    setTimeout(()=>map.flyTo([first.lat,first.lon],first.zoom,{duration:1.25,easeLinearity:.2}),120);
+  }
+  function travelTo(index){
+    const targetIndex=Math.max(0,Math.min(chapterStops.length-1,index));
+    if(targetIndex===0){if(currentIndex!==0)resetJourneyMap();return;}
+    const token=++travelToken,from=chapterStops[targetIndex-1],to=chapterStops[targetIndex],leg=curvedLeg(from,to);
+    if(travelFrame)cancelAnimationFrame(travelFrame);map.stop();activeLine.setLatLngs([]);marker.setLatLng([from.lat,from.lon]);
+    setMarkerLabel(from.name+' → '+to.name);
+    map.fitBounds(L.latLngBounds([[from.lat,from.lon],[to.lat,to.lon]]),{padding:[110,110],maxZoom:7.5,animate:true,duration:.72});
+    setTimeout(()=>{
+      if(token!==travelToken)return;const start=performance.now(),duration=2350;
+      function draw(now){
+        if(token!==travelToken)return;const p=Math.min(1,(now-start)/duration),eased=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+        const end=Math.max(1,Math.floor(eased*(leg.length-1))),shown=leg.slice(0,end+1),head=shown[shown.length-1];
+        activeLine.setLatLngs(shown);marker.setLatLng(head);
+        if(p<1){travelFrame=requestAnimationFrame(draw);return;}
+        completedPoints=completedPoints.concat(leg.slice(1));completedLine.setLatLngs(completedPoints);activeLine.setLatLngs([]);
+        currentIndex=targetIndex;setMarkerLabel(to.name);map.flyTo([to.lat,to.lon],to.zoom,{duration:1.15,easeLinearity:.18});
+      }
+      travelFrame=requestAnimationFrame(draw);
+    },760);
+  }
+  window.__resetLongMarchMap=resetJourneyMap;
+  window.__travelLongMarchMap=travelTo;
+  window.__leaveLongMarchMap=function(index){const stop=chapterStops[Math.max(0,Math.min(chapterStops.length-1,index))];map.stop();map.flyTo([stop.lat,stop.lon],Math.max(7.6,stop.zoom-2.1),{duration:1.0,easeLinearity:.22});};
+  window.__showLongMarchMapOverview=function(){travelToken++;if(travelFrame)cancelAnimationFrame(travelFrame);map.stop();map.fitBounds(journeyBounds,{padding:[52,52],animate:true,duration:1.6});};
+  resetJourneyMap();
   setTimeout(()=>map.invalidateSize(false),80);
 })();
 </script>
@@ -806,7 +839,6 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     const c=chapters[index];
     if(!c)return;
     prepareHistoricScene(index);
-    if(window.__flyLongMarchMap)window.__flyLongMarchMap(index);
     root.dataset.chapter=String(index+1);
     document.getElementById('heroEyebrow').textContent=c.place;
     document.getElementById('titleLine1').textContent=c.title1;
@@ -869,6 +901,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     followRoute=true;
     root.classList.remove('final-ready','show-history');
     hideHistoricScene();
+    if(window.__resetLongMarchMap)window.__resetLongMarchMap();
     document.getElementById('skipButton').innerHTML='跳过序章 <span aria-hidden="true">↗</span>';
     journeyState.progress=0;routeReveal.value=0;convergenceState.value=0;focusState.zoom=0;
     cameraMotion.altitude=43;cameraMotion.followDistance=28;cameraMotion.overview=1;cameraMotion.fov=56;
@@ -891,11 +924,12 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     // Each chapter is a repeated cinematic unit: travel -> focus push-in -> archive dissolve -> pull back.
     for(let i=0;i<chapters.length;i++){
       const c=chapters[i];
+      tl.call(()=>{if(window.__travelLongMarchMap)window.__travelLongMarchMap(i);});
       if(i===0){
         tl.to(journeyState,{progress:c.progress,duration:3.2,ease:'power2.inOut'},'>');
         tl.to(routeReveal,{value:Math.min(c.progress/.78,1),duration:3.2,ease:'power1.inOut'},'<');
       } else {
-        const duration=(i===4||i===5)?3.35:(i>=7?3.1:2.75);
+        const duration=4.55;
         tl.to(journeyState,{progress:c.progress,duration,ease:(i===3||i===7)?'power3.inOut':'power2.inOut'});
         tl.to(routeReveal,{value:Math.min(c.progress/.78,1),duration,ease:'power1.inOut'},'<');
         tl.to(convergenceState,{value:i>=7?Math.min(1,(i-6)/3):0,duration,ease:'power2.out'},'<');
@@ -909,6 +943,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
       tl.to({}, {duration:2.7});
       tl.to('#historyStage',{opacity:0,duration:.82,ease:'power2.in'});
       tl.call(()=>root.classList.remove('show-history'),null,'<+0.16');
+      tl.call(()=>{if(window.__leaveLongMarchMap)window.__leaveLongMarchMap(i);},null,'<');
       tl.to(hud,{opacity:1,duration:.74,ease:'power2.out'},'<+0.02');
       tl.to(focusState,{zoom:0,duration:1.42,ease:'power3.inOut'},'<');
       tl.call(()=>{if(historyStage)historyStage.setAttribute('aria-hidden','true');});
@@ -1134,7 +1169,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     ['1936.10.09','甘肃会宁','胜利的汇流','红四方面军指挥部到达会宁，与红一方面军会合。','会宁会师 · 红一、红四方面军'],
     ['1936.10.22','宁夏将台堡','三军胜利会师','红二方面军指挥部到达将台堡与红一方面军会合，三大主力长征胜利结束。','三大主力红军胜利会师']
   ];
-  let timer = null, index = 0, started = false, final = false;
+  let timer = null, chapterTimer = null, index = 0, started = false, final = false;
   function setText(id, value) { const el = document.getElementById(id); if (el) el.textContent = value; }
   function revealText() {
     const hero = document.getElementById('heroContent');
@@ -1170,11 +1205,12 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     window.clearTimeout(window.__longMarchHistoryTimer);
     window.__longMarchHistoryTimer=window.setTimeout(()=>{
       stage.style.opacity='0';root.classList.remove('show-history');stage.setAttribute('aria-hidden','true');
+      if(window.__leaveLongMarchMap)window.__leaveLongMarchMap(i);
     },3600);
   }
   function showChapter(i) {
     index = i; window.__journeyMapChapter=i; window.__journeyMapProgress=[.015,.12,.22,.33,.45,.59,.78,.87,.95,1][i]||0; const c = chapters[i];
-    if(window.__flyLongMarchMap)window.__flyLongMarchMap(i);
+    if(window.__travelLongMarchMap)window.__travelLongMarchMap(i);
     setText('heroEyebrow', 'THE LONG MARCH · ' + c[0]);
     setText('titleLine1', c[1]); setText('titleLine2', c[2]);
     document.getElementById('heroSubtitle').innerHTML = c[3] + '<br><b>山河为证，精神永续。</b>';
@@ -1186,11 +1222,13 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     revealText();
     document.getElementById('journeyFill').style.width = ((i + 1) / chapters.length * 100) + '%';
     const path = document.querySelector('.fallback-route .route-line');
-    if (path) path.style.animationDuration = (chapters.length * 5.2) + 's';
-    showFallbackHistoricalScene(i);
+    if (path) path.style.animationDuration = (chapters.length * 8) + 's';
+    clearTimeout(chapterTimer);
+    chapterTimer=setTimeout(()=>showFallbackHistoricalScene(i),i===0?1450:4250);
   }
   function showFinale() {
     clearInterval(timer); timer = null; final = true;
+    clearTimeout(chapterTimer);chapterTimer=null;
     if(window.__showLongMarchMapOverview)window.__showLongMarchMapOverview();
     window.clearTimeout(window.__longMarchHistoryTimer);
     const stage=document.getElementById('historyStage');if(stage){stage.style.opacity='0';stage.setAttribute('aria-hidden','true');}
@@ -1209,6 +1247,8 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
   }
   function start() {
     clearInterval(timer); started = true; final = false; index = 0;
+    clearTimeout(chapterTimer);chapterTimer=null;
+    if(window.__resetLongMarchMap)window.__resetLongMarchMap();
     root.classList.add('fallback-mode'); root.classList.remove('fallback-done','final-ready');
     ['heroContent','topbar','bottom-meta','scene-label'].forEach(id => { const el = id === 'heroContent' ? document.getElementById(id) : document.querySelector('.' + id); if (el) { el.style.removeProperty('opacity'); el.style.removeProperty('transform'); el.style.removeProperty('filter'); } });
     if (canvas) canvas.style.display = 'none';
@@ -1218,7 +1258,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     showChapter(0);
     timer = setInterval(() => {
       if (index < chapters.length - 1) showChapter(index + 1); else showFinale();
-    }, 5200);
+    }, 8000);
   }
   function enterExperience() {
     if (!final) { showFinale(); return; }
@@ -1242,16 +1282,16 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
   if(!node||!data)return;
   function showCard(){root.classList.add('map-ready');}
   function sourceMapFallback(){
-    node.style.backgroundImage="url('https://www.ccphistory.org.cn/shds/upload/ueditor/1697682285813.jpg')";
+    node.style.backgroundImage='radial-gradient(circle at 62% 44%,#38503e,#15241c 72%,#090d0a)';
     node.style.backgroundSize='cover';node.style.backgroundPosition='center';
   }
   if(!window.L){sourceMapFallback();showCard();return;}
   try{
     const map=L.map(node,{zoomControl:false,scrollWheelZoom:false,dragging:false,doubleClickZoom:false,
       touchZoom:false,keyboard:false,attributionControl:true,zoomSnap:.1,preferCanvas:true});
-    const tile=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{
-      maxZoom:15, crossOrigin:true,
-      attribution:'© OpenStreetMap contributors, SRTM · Map style © OpenTopoMap (CC-BY-SA)'
+    const tile=L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
+      maxZoom:18, crossOrigin:true,
+      attribution:'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community'
     }).addTo(map);
     let successfulTiles=0;
     tile.on('tileload',()=>{successfulTiles++; if(successfulTiles>=2)node.style.backgroundImage='none';});
