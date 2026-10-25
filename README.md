@@ -10,4 +10,6 @@
 
 ## 在线演示
 
-本项目通过 GitHub Pages 自动部署，演示地址将在仓库启用 Pages 后生成。
+本项目通过 GitHub Pages 自动部署：
+
+https://findstar818.github.io/shanhe-zhengji/
