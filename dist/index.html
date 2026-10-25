@@ -107,12 +107,12 @@
   .scene-label { position: absolute; z-index: 3; right: 7.3vw; top: 46%; transform: translateY(-50%); writing-mode: vertical-rl; color: rgba(209,182,137,.6); letter-spacing: .36em; font-size: 9px; pointer-events: none; display: flex; gap: 14px; align-items: center; }
   .scene-label::before { content: ""; height: 62px; width: 1px; background: linear-gradient(180deg, transparent, #b78a53, transparent); }
   .scene-label::after { content: ""; height: 62px; width: 1px; background: linear-gradient(180deg, transparent, #b78a53, transparent); }
-  #transition { position: absolute; inset: 0; z-index: 20; pointer-events: none; opacity: 0; background: radial-gradient(ellipse at 62% 48%, rgba(192,105,53,.22), transparent 34%), #090909; transition: opacity .85s ease; display: grid; place-items: center; }
-  #transition .transition-copy { opacity: 0; transform: translateY(14px); transition: opacity .55s ease .18s, transform .55s ease .18s; text-align: center; }
-  #transition .transition-copy div:first-child { font-size: 22px; letter-spacing: .38em; color: #e8d5b7; }
-  #transition .transition-copy div:last-child { margin-top: 13px; font-size: 9px; color: #a98960; letter-spacing: .28em; }
-  #experience.leaving #transition { opacity: 1; pointer-events: all; }
-  #experience.leaving #transition .transition-copy { opacity: 1; transform: translateY(0); }
+  #transition { position: fixed; inset: 0; z-index: 500; pointer-events: none; opacity: 0; background: linear-gradient(90deg,rgba(8,6,5,.82),rgba(8,6,5,.28)),url('assets/opening-snow-cinematic.png') center/cover no-repeat; transition: opacity 1.05s ease; display: grid; place-items: center; will-change:opacity; }
+  #transition .transition-copy { opacity: 0; transform: translateY(14px); transition: opacity .65s ease .28s, transform .65s ease .28s; text-align: center; text-shadow:0 4px 28px #000; }
+  #transition .transition-copy span { display:block; margin-bottom:15px; color:#d5ad70; font-size:12px; letter-spacing:.35em; }
+  #transition .transition-copy b { font:700 clamp(24px,3vw,46px)/1.4 "Noto Serif SC","Songti SC",serif; letter-spacing:.12em; color:#eee1ca; }
+  #experience.leaving #transition { opacity: 1 !important; pointer-events: all; }
+  #experience.leaving #transition .transition-copy { opacity: 1 !important; transform: translateY(0) !important; }
   #experience.leaving .hero, #experience.leaving .topbar, #experience.leaving .bottom-meta, #experience.leaving .scene-label { opacity: 0; transition: opacity .35s ease; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
@@ -202,6 +202,9 @@
   }
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<link rel="preload" as="image" href="assets/opening-snow-cinematic.png" fetchpriority="high" />
+<link id="museumStyle" rel="preload" as="style" href="styles.css" />
+<link rel="preload" as="script" href="app.js" />
 </head>
 <body>
 <div id="experience">
@@ -218,13 +221,13 @@
       <div class="brand-mark" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5 13.7 9l5.2-2.1-2.8 4.8 4.8 2.9-5.6.3-.9 5.5-2.4-5-5 2.4 2.2-5.2-5.1-2.2 5.6-.7L12 3.5Z" stroke="currentColor" stroke-width=".8" fill="rgba(199,160,106,.18)"/><circle cx="12" cy="12" r="8.8" stroke="currentColor" stroke-width=".55" opacity=".6"/></svg>
       </div>
-      <div><div class="brand-name">星火启程 · 数字长征</div><div class="brand-sub">A JOURNEY OF FAITH &amp; FUTURE</div></div>
+      <div><div class="brand-name">星火启程 · 数字长征</div><div class="brand-sub">赓续长征精神 · 奋进时代新程</div></div>
     </div>
     <div class="top-meta"><span id="topStage">长征全程 · 沉浸叙事</span><span id="chapterCount">01 / 10</span></div>
   </header>
 
   <main class="hero" id="heroContent">
-    <div class="eyebrow" id="heroEyebrow">THE LONG MARCH · 1934</div>
+    <div class="eyebrow" id="heroEyebrow">中国工农红军长征 · 1934</div>
     <h1><span class="title-line" id="titleLine1">中央苏区 · 于都</span><span class="title-line" id="titleLine2">星火初燃</span></h1>
     <p class="subtitle" id="heroSubtitle">中央红军从中央苏区出发，开启艰苦卓绝的战略转移。<br><b>一条征途，由此启程。</b></p>
     <div class="hero-rule" id="heroRule"></div>
@@ -233,22 +236,22 @@
         <span>开启新征程</span>
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <div class="entry-note"><strong>ENTER EXPERIENCE</strong>点击开启 · 进入作品</div>
+      <div class="entry-note"><strong>重走长征路</strong>点击开启 · 进入作品</div>
     </div>
   </main>
 
   <div class="scene-label" aria-hidden="true">山河为证 · 精神永续 · 青春作答</div>
   <aside class="route-map-card" id="routeMapCard" aria-label="长征真实地形参考图">
-    <div class="route-map-head"><span>TOPOGRAPHIC ROUTE / 地形定位</span><strong>1934—1936</strong></div>
+    <div class="route-map-head"><span>长征路线 · 地形定位</span><strong>1934—1936</strong></div>
     <div class="route-map-frame"><div id="topoMap" role="img" aria-label="基于真实地理坐标的长征路线与地形图"></div></div>
     <div class="map-legend"><span><i></i>中央红军主要路线</span><span><i class="branch"></i>会师路线示意</span><span><i class="camera"></i>镜头所在位置</span></div>
-    <div class="route-map-source"><span>卫星地形：Esri World Imagery · 经纬度路线</span><a href="https://www.ccphistory.org.cn/shds/shhm/content/383e7ee8-064a-4e8f-8b36-1281ea34cbaf.html" target="_blank" rel="noreferrer">历史路线资料 ↗</a></div>
+    <div class="route-map-source"><span>卫星地形：埃斯里卫星影像 · 经纬度路线</span><a href="https://www.ccphistory.org.cn/shds/shhm/content/383e7ee8-064a-4e8f-8b36-1281ea34cbaf.html" target="_blank" rel="noreferrer">历史路线资料 ↗</a></div>
   </aside>
-  <div class="history-note">镜头沿历史路线主要节点连续推进；三维地形根据地理位置进行艺术化重构，非精确 DEM 高程模型。</div>
+  <div class="history-note">镜头沿历史路线主要节点连续推进；三维地形根据地理位置进行艺术化重构，并非精确数字高程模型。</div>
 
   <footer class="hud bottom-meta">
     <div class="timeline"><span class="year" id="currentYear">1934.10</span><span class="timeline-line"></span><span id="timelineCaption">伟大远征 · 从中央苏区出发</span></div>
-    <div class="bottom-right"><div><strong id="bottomKicker">FROM MEMORY TO TOMORROW</strong><span id="bottomCaption">向历史致敬 · 向未来出发</span></div><div class="vertical-rule"></div><div>长征序章<br><span id="bottomChapter">01 / 09</span></div></div>
+    <div class="bottom-right"><div><strong id="bottomKicker">从历史深处走向时代新程</strong><span id="bottomCaption">向历史致敬 · 向未来出发</span></div><div class="vertical-rule"></div><div>长征序章<br><span id="bottomChapter">01 / 09</span></div></div>
   </footer>
 
   <button id="skipButton" class="skip-button" type="button">跳过序章 <span aria-hidden="true">↗</span></button>
@@ -259,7 +262,7 @@
     <div class="history-image-shade"></div>
     <div class="history-film-frame" aria-hidden="true"></div>
     <canvas id="historyParticleCanvas" aria-hidden="true"></canvas>
-    <div class="history-topline"><span id="historyKicker">THE LONG MARCH · ARCHIVE</span><span id="historyCounter">01 / 10</span></div>
+    <div class="history-topline"><span id="historyKicker">长征历史影像</span><span id="historyCounter">01 / 10</span></div>
     <div class="history-copy">
       <div class="history-overline" id="historyOverline">1934.10 · 于都河</div>
       <h2 id="historyTitle">星火初燃</h2>
@@ -269,13 +272,118 @@
     </div>
     <div class="history-source"><span id="historyVisualType">历史影像</span><a id="historySourceLink" href="https://www.thepaper.cn/newsDetail_forward_3548921" target="_blank" rel="noreferrer">图像出处 ↗</a></div>
   </section>
-  <div id="transition" aria-hidden="true"><div class="transition-copy"><div>新征程，即将开启</div><div>FROM HISTORY · INTO THE FUTURE</div></div></div>
+  <div id="transition" aria-hidden="true"><div class="transition-copy"><span>1934—1936</span><b>沿着长征路线，抵达历史现场</b></div></div>
 </div>
+
+<template id="museumTemplate">
+  <div class="arrival-transition" id="arrivalTransition" aria-hidden="true"><div><span>1934—1936</span><b>沿着长征路线，抵达历史现场</b></div></div>
+  <div class="cursor-light" aria-hidden="true"></div>
+  <section class="entry" id="entry" aria-label="进入展览">
+    <div class="entry-bg entry-fallback"></div><canvas class="entry-scene" id="entryScene" aria-hidden="true"></canvas><div class="entry-depth" aria-hidden="true"><span>江西 · 于都</span><i></i><span>陕北 · 会宁</span></div><div class="entry-compass" aria-hidden="true"><span>1934</span><i></i><span>1936</span></div>
+    <div class="entry-copy"><p class="eyebrow">中国工农红军长征 · 1934—1936</p><h1><span>万里</span><em>信仰之路</em></h1>
+      <p class="entry-lead">一次战略转移，一场穿越生死的远征。<br>沿着十一处历史坐标，听见八十多年前的风雪、江河与脚步。</p>
+      <div class="entry-actions"><button class="primary-btn" id="enterSound">开启声场 · 进入</button><button class="ghost-btn" id="enterSilent">静音进入</button></div><p class="entry-hint">声音将在点击后播放 · 可随时关闭</p>
+    </div><button class="entry-index" data-enter="silent"><b>11</b><span>处历史坐标</span></button>
+  </section>
+  <main class="exhibition" id="exhibition" aria-hidden="true">
+    <header class="topbar"><button class="brand" data-room="prologue" aria-label="返回序厅"><span>万里</span><i></i>信仰之路</button>
+      <nav class="main-nav" aria-label="展览导航"><button id="openingNav"><span>00</span>序章</button><button class="active" data-room="prologue"><span>01</span>序厅</button><button data-room="route"><span>02</span>征途全景</button><button data-room="archive"><span>03</span>历史现场</button><button data-room="decision"><span>04</span>抉择时刻</button><button data-room="legacy"><span>05</span>薪火接力</button><button data-room="finale"><span>06</span>终章</button></nav>
+      <div class="top-actions"><button class="icon-btn" id="sourceBtn">史料</button><button class="sound-btn" id="soundBtn"><span class="sound-bars"><i></i><i></i><i></i></span><b>声场</b></button><button class="menu-btn" id="menuBtn"><i></i><i></i></button></div>
+    </header>
+    <div class="room-stage">
+      <section class="room prologue-room active" id="room-prologue" data-room-name="prologue">
+        <div class="prologue-image"></div><div class="prologue-vignette"></div><div class="prologue-copy"><p class="eyebrow">中国工农红军长征 · 1934—1936</p><h2>他们走过的，<br><span>不只是二万五千里。</span></h2><p>从赣南出发，到陕北会师。饥饿、围追、江河、雪山与草地，都没能让这支队伍停止前进。长征不是一条抽象的红线，而是无数人在生死之间做出的选择。</p><button class="text-link" data-room="route">从于都出发 <span>→</span></button></div>
+        <div class="prologue-facts"><div><b data-count="12500">0</b><span>公里 · 中央红军长征里程约数</span></div><div><b data-count="15">0</b><span>纵横省份（传统概述）</span></div><div><b data-count="380">0</b><span>余次战斗</span></div><div><b data-count="18">0</b><span>座山脉</span></div></div><div class="room-number">01</div>
+      </section>
+      <section class="room route-room" id="room-route" data-room-name="route">
+        <div class="room-heading"><p class="eyebrow">征途图志 · 点击坐标进入现场</p><h2>把每一步，放回真实山河</h2></div>
+        <div class="route-layout"><div class="map-board" id="mapBoard"><div class="route-map" id="routeMap" role="img" aria-label="长征关键地点真实世界地图"></div><div class="map-film" aria-hidden="true"></div><div class="map-title"><b id="mapPlace">于都</b><span>真实世界地图 · 经纬度定位</span></div><div class="map-legend"><span><i class="live"></i>当前地点</span><span><i></i>中央红军关键节点</span><em>卫星底图与地理数据来源见史料说明</em></div><div class="map-coordinate" id="mapCoordinate">北纬25.95° · 东经115.42°</div></div><aside class="route-focus" id="routeFocus"></aside></div>
+        <div class="route-strip"><button class="strip-arrow" id="routePrev">←</button><div class="route-scroll" id="routeScroll"></div><button class="strip-arrow" id="routeNext">→</button></div>
+      </section>
+      <section class="room archive-room" id="room-archive" data-room-name="archive">
+        <div class="archive-head"><div><p class="eyebrow">历史影像墙 · 影像有其年代</p><h2>历史现场，不止一种面貌</h2></div><p>历史照片、旧址今貌与影像复原分别标注。它们不是装饰，而是通向具体时间、人物与地点的入口。</p></div><div class="archive-wall" id="archiveWall"></div><div class="archive-progress"><i id="archiveProgress"></i></div>
+      </section>
+      <section class="room decision-room" id="room-decision" data-room-name="decision">
+        <div class="decision-bg" id="decisionBg"></div><div class="decision-shell"><div class="decision-intro"><p class="eyebrow">历史抉择 · 把自己放进历史</p><h2>如果你站在<br>那个岔路口</h2><p>这里没有抽象的“精神数值”。只有情报不全、时间紧迫、伤亡真实的历史处境。先作出你的判断，再看当时的选择。</p><div class="scenario-tabs" id="scenarioTabs"></div></div><div class="decision-card" id="decisionCard"></div></div>
+      </section>
+      <section class="room legacy-room" id="room-legacy" data-room-name="legacy">
+        <div class="legacy-glow"></div><div class="legacy-copy"><p class="eyebrow">长征永远在路上 · 你的这一程</p><h2>长征永远在路上</h2><p>八十多年过去，长征精神不再只属于雪山与草地。先从一件真实信物出发，再写下你愿意带向下一程的力量。</p><div class="legacy-pulse" aria-label="长征精神的三个历史切面"><span><small>1934 · 出发</small><b>把选择交给信仰</b></span><span><small>1935 · 转折</small><b>把答案交给实践</b></span><span><small>1936 · 会师</small><b>把胜利交给人民</b></span></div><div class="relic-section"><span>选择一件长征信物</span><div class="relic-picks" id="relicPicks"></div><p id="relicStory"></p></div><div class="legacy-form"><label><span>写给下一程的自己</span><input id="legacyText" maxlength="24" placeholder="例如：在看不清终点时，仍走好下一步" /></label><div class="spirit-picks" id="spiritPicks"><button class="active" data-spirit="信仰">信仰</button><button data-spirit="求实">求实</button><button data-spirit="团结">团结</button><button data-spirit="担当">担当</button></div><button class="primary-btn" id="generateCard">生成我的长征坐标</button></div></div>
+        <div class="legacy-card-wrap"><div class="legacy-card" id="legacyCard"><div class="card-map"></div><div class="card-top"><span>长征精神 · 2026</span><b id="cardNumber">编号 1934</b></div><div class="card-mark">征</div><div class="card-relic" id="cardRelic">草鞋 · 行路</div><div class="card-content"><small>我的精神坐标</small><h3 id="cardSpirit">信仰</h3><p id="cardText">在看不清终点时，仍走好下一步。</p></div><div class="card-bottom"><span>从历史深处出发</span><span id="cardDate">2026.10.24</span></div></div><button class="download-btn" id="downloadCard">↓ 下载纪念卡</button></div>
+      </section>
+      <section class="room finale-room" id="room-finale" data-room-name="finale">
+        <div class="finale-backdrop" id="finaleBackdrop"></div><div class="finale-shade"></div>
+        <div class="finale-copy"><p class="eyebrow">终章 · 他们共同的名字</p><h2>一次远征，<br><span>改变中国革命的方向。</span></h2><p>长征保存和锻炼了中国共产党与红军的骨干力量，使中国革命转危为安；它把理想、纪律与人民的支持写进漫长道路，也为全民族抗战和中国革命的新局面保存了火种。</p><div class="finale-impact"><b>不是少数人的传奇</b><span>是领袖与战士、船工与群众、幸存者与无名牺牲者共同完成的历史。</span></div></div>
+        <div class="rollcall"><div class="roll-head"><span id="rollIndex">01 / 09</span><small>长征群像 · 自动轮播</small></div><div class="roll-stage" id="rollStage"></div><div class="roll-controls"><button id="rollPrev">←</button><i><em id="rollProgress"></em></i><button id="rollNext">→</button></div></div>
+        <div class="finale-quote"><span>“长征是宣言书，长征是宣传队，长征是播种机。”</span><small>—— 毛泽东，1935年</small></div><div class="finale-end">此程结束 · 精神仍在继续</div>
+        <div class="finale-intro" id="finaleIntro" aria-hidden="true">
+          <div class="finale-stream" id="finaleStream" aria-hidden="true"></div>
+          <div class="finale-journey">
+            <div class="journey-kicker"><span>1934—1936</span><b id="finaleJourneyCount">01 / 11</b></div>
+            <h3 id="finaleJourneyPlace">于都 · 长征出发</h3>
+            <div class="journey-line"><i id="finaleJourneyProgress"></i><div id="finaleJourneyNodes"></div></div>
+          </div>
+          <div class="finale-blackout"></div>
+          <div class="finale-epilogue"><span>1934—1936</span><b>此程结束，<br>长征精神仍在继续</b></div>
+          <button class="finale-skip" id="finaleSkip" type="button">跳过回望</button>
+        </div>
+      </section>
+    </div><div class="room-dots"><button class="active" data-room="prologue"></button><button data-room="route"></button><button data-room="archive"></button><button data-room="decision"></button><button data-room="legacy"></button><button data-room="finale"></button></div>
+  </main>
+  <aside class="detail-panel" id="detailPanel" aria-hidden="true"><button class="panel-close" id="panelClose">×</button><div class="detail-image"><div class="detail-field-card"><div class="field-contours" aria-hidden="true"></div><div class="field-heading"><span>事件地形档案</span><b id="detailIndex"></b></div><div class="field-place"><small id="detailFieldDate"></small><h3 id="detailMapName"></h3><p id="detailFieldSub"></p></div><div class="field-route" aria-hidden="true"><i></i><em></em><i></i></div><div class="field-metrics"><span><small>地形</small><b id="detailFieldTerrain"></b></span><span><small>天候</small><b id="detailFieldWeather"></b></span><span><small>处境</small><b id="detailFieldPressure"></b></span></div><div class="field-stamp" id="detailFieldAccent"></div></div></div><div class="detail-body"><div class="detail-kicker"><span id="detailDate"></span><i></i><span id="detailCoord"></span></div><h2 id="detailTitle"></h2><p class="detail-subtitle" id="detailSubtitle"></p><blockquote id="detailLead"></blockquote><div class="detail-tabs" id="detailTabs"><button class="active" data-detail-tab="origin">事件全貌</button><button data-detail-tab="people">人物档案</button><button data-detail-tab="scene">现场还原</button><button data-detail-tab="impact">转折与影响</button></div><div class="detail-tabstage" id="detailTabStage"></div><div class="detail-footer"><a id="detailSource" target="_blank" rel="noopener">查看史料来源 ↗</a><div class="detail-nav"><button id="detailPrev">← 上一站</button><button id="detailNext">下一站 →</button></div></div></div></aside>
+  <aside class="source-panel" id="sourcePanel" aria-hidden="true"><button class="panel-close" id="sourceClose">×</button><p class="eyebrow">史料依据</p><h2>让每一个坐标<br>有据可查</h2><p class="source-note">叙事依据党史、军史与纪念馆公开资料整理；路线坐标用于地理定位展示，标注为遗址或纪念地附近坐标。</p><div class="source-list" id="sourceList"></div></aside><div class="scrim" id="scrim"></div><canvas id="dissolveCanvas" class="dissolve-canvas" aria-hidden="true"></canvas><canvas id="cardCanvas" width="1200" height="1600" hidden></canvas>
+</template>
 
 <!-- The route geometry below uses geographic coordinates (longitude, latitude).
      It is a generalized historical route, not a claim of meter-accurate marching tracks. -->
 <script>
-window.CHRONICLE_TARGET_URL = './museum.html';
+/* 展览主体已内嵌在本页；开场期间预载征途全景所需的独立地形图运行环境。 */
+window.__museumRuntime = Promise.all([
+  new Promise(resolve=>{
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href='vendor/maplibre-gl.css';
+    link.onload=resolve;link.onerror=resolve;
+    document.head.appendChild(link);
+  }),
+  new Promise(resolve=>{
+    if(window.maplibregl){resolve();return}
+    const script=document.createElement('script');
+    script.src='vendor/maplibre-gl.js';
+    script.onload=resolve;script.onerror=resolve;
+    document.head.appendChild(script);
+  })
+]);
+window.enterMuseumExperience=async function(){
+  if(window.__museumEntering)return;window.__museumEntering=true;
+  try{
+    await window.__museumRuntime;
+    window.__openingDisposed=true;
+    window.dispatchEvent(new Event('museum-entering'));
+    const template=document.getElementById('museumTemplate');
+    if(!template)throw new Error('展览主体缺失');
+    const style=document.getElementById('museumStyle');
+    style.rel='stylesheet';style.removeAttribute('as');
+    await new Promise((resolve,reject)=>{
+      let frames=0;
+      const check=()=>{
+        if(style.sheet){requestAnimationFrame(()=>requestAnimationFrame(resolve));return}
+        if(frames++<180){requestAnimationFrame(check);return}
+        reject(new Error('展览样式加载失败'));
+      };
+      check();
+    });
+    const museumContent=template.content.cloneNode(true);
+    const arrival=museumContent.querySelector('#arrivalTransition');
+    if(arrival)arrival.classList.add('show');
+    document.title='万里·信仰之路｜长征数字展';
+    document.body.className='museum-mode';
+    document.body.replaceChildren(museumContent);
+    history.replaceState({view:'museum'},'',location.pathname+location.search);
+    await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='app.js';script.onload=resolve;script.onerror=reject;document.body.append(script)});
+    if(arrival){requestAnimationFrame(()=>requestAnimationFrame(()=>arrival.classList.add('reveal')));setTimeout(()=>arrival.remove(),2200)}
+  }catch(error){console.error(error);window.__museumEntering=false}
+};
+window.returnToOpening=function(){document.documentElement.style.background='#090909';window.location.replace('./index.html')};
 window.LONG_MARCH_GEO = {
   main: [
     {name:'于都', lon:115.40, lat:25.95}, {name:'赣粤边', lon:113.80, lat:25.78},
@@ -310,7 +418,7 @@ window.LONG_MARCH_GEO = {
 <script>
 /* Historical visual references. Each entry distinguishes archival photographs from paintings, diagrams, and modern memorial imagery. */
 window.LONG_MARCH_VISUALS = [
-  {src:'https://x0.ifengimg.com/ucms/2023_11/187D5C5A27939052DF9879027B6DF2B68B07FD95_size1191_w963.png', alt:'于都中央红军长征出发地纪念园的当代影像', type:'当代纪念地影像 · 非1934年现场照片', credit:'凤凰网江西', href:'https://i.ifeng.com/c/8OAaIg2nwZs', mode:'gold'},
+  {src:'assets/opening/yudu-arrival.png', alt:'于都中央红军长征出发场景', type:'于都长征出发主题影像', credit:'于都长征出发主题资料图', href:'https://x0.ifengimg.com/cmpp/fck/2020_24/41af652b7215dc0_w1679_h943.png', mode:'gold'},
   {src:'https://www.gxjjw.gov.cn/data/images/uploadpic/2015/02/27/f10533b81fbdf22ae4ce7f6983162a47.jpg', alt:'湘江战役纪念馆的战役复原场景', type:'纪念馆复原场景 · 非现场照片', credit:'广西纪检监察网图集', href:'https://www.gxjjw.gov.cn/staticpages/20150310/gxjjw54fe43b4-98621-14.shtml', mode:'embers'},
   {src:'https://www.sznews.com/news/pic/2021-04/21/5e7debbf-2d5e-422a-ad04-aeec9c6c65ac.jpg', alt:'遵义会议旧址建筑影像', type:'历史旧址影像 · 建筑现貌', credit:'深圳新闻网', href:'https://www.sznews.com/news/content/2021-04/21/content_24148652.htm', mode:'gold'},
   {src:'https://m.cnr.cn/sichuan/news/tsc/20210119/W020210119675953161025.jpg', alt:'四渡赤水主题历史影像中的红军战士', type:'四渡赤水主题历史影像', credit:'央广网', href:'https://m.cnr.cn/sichuan/news/tsc/20210119/t20210119_525394652.html', mode:'embers'},
@@ -431,7 +539,6 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
   // ================== EDIT THIS DESTINATION ==================
   // Replace this with your existing page URL / Vue route.
   // Examples: './index.html', './app.html', '/dashboard', '/chat'
-  const TARGET_URL = window.CHRONICLE_TARGET_URL || './index.html';
   // ===========================================================
 
   const root = document.getElementById('experience');
@@ -692,16 +799,16 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
   }
 
   const chapters = [
-    {year:'1934.10',place:'THE JOURNEY BEGINS',title1:'中央苏区 · 于都',title2:'星火初燃',desc:'中央红军从中央苏区出发，开启艰苦卓绝的战略转移。<br><b>一条征途，由此启程。</b>',caption:'中央苏区出发',progress:.015,mood:{heat:.28,gold:.1,snow:0,impact:.2,bridge:0}},
-    {year:'1934.11—12',place:'THE XIANG RIVER',title1:'湘江战役',title2:'血战突围',desc:'突破第四道封锁线，队伍付出巨大牺牲。<br><b>信念，在危急关头经受考验。</b>',caption:'突破湘江封锁线',progress:.12,mood:{heat:.9,gold:0,snow:0,impact:1,bridge:0}},
-    {year:'1935.01',place:'THE TURNING POINT',title1:'遵义会议',title2:'伟大转折',desc:'在危急关头总结经验、调整方向，革命航船由此拨正航向。<br><b>独立自主，打开新的前进道路。</b>',caption:'遵义会议 · 伟大转折',progress:.22,mood:{heat:.12,gold:.55,snow:0,impact:.55,bridge:0}},
-    {year:'1935.01—03',place:'FOUR CROSSINGS OF CHISHUI',title1:'赤水河畔',title2:'四渡赤水',desc:'在运动中寻找战机、摆脱围追堵截。<br><b>机动灵活，化被动为主动。</b>',caption:'四渡赤水 · 掌握主动',progress:.33,mood:{heat:.72,gold:.22,snow:0,impact:.82,bridge:0}},
-    {year:'1935.05',place:'JINSHA RIVER · LUDING BRIDGE',title1:'金沙江 · 大渡河',title2:'飞夺泸定桥',desc:'巧渡金沙江，强渡大渡河、飞夺泸定桥。<br><b>征途在惊涛险隘间继续向前。</b>',caption:'巧渡金沙江 · 飞夺泸定桥',progress:.45,mood:{heat:.75,gold:.52,snow:0,impact:1,bridge:1}},
-    {year:'1935.06—08',place:'SNOW MOUNTAINS · GRASSLAND',title1:'夹金山 · 松潘草地',title2:'雪山草地',desc:'翻越冰封雪盖的高山，穿越艰险草地。<br><b>以顽强意志走过最艰难的路。</b>',caption:'翻越雪山 · 穿越草地',progress:.59,mood:{heat:.05,gold:.05,snow:1,impact:.5,bridge:0}},
-    {year:'1935.09—10',place:'THE NORTH SHAANXI BASE',title1:'陕北新力量',title2:'先行与会合',desc:'红二十五军先期到达陕北；1935年10月，中央红军抵达吴起镇。<br><b>长征的重要阶段迎来新的落脚点。</b>',caption:'红二十五军先期到达 · 中央红军抵达吴起镇',progress:.78,mood:{heat:.18,gold:.72,snow:.18,impact:.6,bridge:0}},
-    {year:'1935.11—1936.07',place:'THE SECOND FRONT ARMY',title1:'从湘鄂川黔启程',title2:'会师甘孜',desc:'红二、红六军团历尽艰险，于1936年7月与红四方面军在甘孜会师，随后整编为红二方面军。<br><b>不同征途，继续向北。</b>',caption:'红二、红六军团长征 · 甘孜会师',progress:.87,mood:{heat:.36,gold:.48,snow:.1,impact:.55,bridge:0}},
-    {year:'1936.10.09',place:'HUI NING · GANSU',title1:'甘肃会宁',title2:'红一、红四方面军会师',desc:'1936年10月9日，红四方面军指挥部到达会宁，与红一方面军会合。<br><b>胜利的汇流，正在眼前。</b>',caption:'会宁会师 · 红一、红四方面军',progress:.95,mood:{heat:.25,gold:.88,snow:0,impact:.85,bridge:0}},
-    {year:'1936.10.22',place:'JIANGTAIBAO · NINGXIA',title1:'宁夏将台堡',title2:'三军胜利会师',desc:'红二方面军指挥部到达将台堡，与红一方面军会合。至此，红军三大主力长征胜利结束。<br><b>伟大远征，铸就不朽精神。</b>',caption:'三大主力红军胜利会师 · 长征胜利结束',progress:1,mood:{heat:.25,gold:1,snow:0,impact:1,bridge:0}}
+    {year:'1934.10',place:'伟大远征由此启程',title1:'中央苏区 · 于都',title2:'星火初燃',desc:'中央红军从中央苏区出发，开启艰苦卓绝的战略转移。<br><b>一条征途，由此启程。</b>',caption:'中央苏区出发',progress:.015,mood:{heat:.28,gold:.1,snow:0,impact:.2,bridge:0}},
+    {year:'1934.11—12',place:'湘江血战 · 突破封锁',title1:'湘江战役',title2:'血战突围',desc:'突破第四道封锁线，队伍付出巨大牺牲。<br><b>信念，在危急关头经受考验。</b>',caption:'突破湘江封锁线',progress:.12,mood:{heat:.9,gold:0,snow:0,impact:1,bridge:0}},
+    {year:'1935.01',place:'危急关头 · 伟大转折',title1:'遵义会议',title2:'伟大转折',desc:'在危急关头总结经验、调整方向，革命航船由此拨正航向。<br><b>独立自主，打开新的前进道路。</b>',caption:'遵义会议 · 伟大转折',progress:.22,mood:{heat:.12,gold:.55,snow:0,impact:.55,bridge:0}},
+    {year:'1935.01—03',place:'赤水河畔 · 灵活机动',title1:'赤水河畔',title2:'四渡赤水',desc:'在运动中寻找战机、摆脱围追堵截。<br><b>机动灵活，化被动为主动。</b>',caption:'四渡赤水 · 掌握主动',progress:.33,mood:{heat:.72,gold:.22,snow:0,impact:.82,bridge:0}},
+    {year:'1935.05',place:'金沙江 · 大渡河',title1:'金沙江 · 大渡河',title2:'飞夺泸定桥',desc:'巧渡金沙江，强渡大渡河、飞夺泸定桥。<br><b>征途在惊涛险隘间继续向前。</b>',caption:'巧渡金沙江 · 飞夺泸定桥',progress:.45,mood:{heat:.75,gold:.52,snow:0,impact:1,bridge:1}},
+    {year:'1935.06—08',place:'翻越雪山 · 穿越草地',title1:'夹金山 · 松潘草地',title2:'雪山草地',desc:'翻越冰封雪盖的高山，穿越艰险草地。<br><b>以顽强意志走过最艰难的路。</b>',caption:'翻越雪山 · 穿越草地',progress:.59,mood:{heat:.05,gold:.05,snow:1,impact:.5,bridge:0}},
+    {year:'1935.09—10',place:'走向陕北 · 新的落脚点',title1:'陕北新力量',title2:'先行与会合',desc:'红二十五军先期到达陕北；1935年10月，中央红军抵达吴起镇。<br><b>长征的重要阶段迎来新的落脚点。</b>',caption:'红二十五军先期到达 · 中央红军抵达吴起镇',progress:.78,mood:{heat:.18,gold:.72,snow:.18,impact:.6,bridge:0}},
+    {year:'1935.11—1936.07',place:'红二方面军 · 会师甘孜',title1:'从湘鄂川黔启程',title2:'会师甘孜',desc:'红二、红六军团历尽艰险，于1936年7月与红四方面军在甘孜会师，随后整编为红二方面军。<br><b>不同征途，继续向北。</b>',caption:'红二、红六军团长征 · 甘孜会师',progress:.87,mood:{heat:.36,gold:.48,snow:.1,impact:.55,bridge:0}},
+    {year:'1936.10.09',place:'甘肃会宁 · 胜利汇流',title1:'甘肃会宁',title2:'红一、红四方面军会师',desc:'1936年10月9日，红四方面军指挥部到达会宁，与红一方面军会合。<br><b>胜利的汇流，正在眼前。</b>',caption:'会宁会师 · 红一、红四方面军',progress:.95,mood:{heat:.25,gold:.88,snow:0,impact:.85,bridge:0}},
+    {year:'1936.10.22',place:'宁夏将台堡 · 三军会师',title1:'宁夏将台堡',title2:'三军胜利会师',desc:'红二方面军指挥部到达将台堡，与红一方面军会合。至此，红军三大主力长征胜利结束。<br><b>伟大远征，铸就不朽精神。</b>',caption:'三大主力红军胜利会师 · 长征胜利结束',progress:1,mood:{heat:.25,gold:1,snow:0,impact:1,bridge:0}}
   ];
   const historyVisuals = window.LONG_MARCH_VISUALS || [];
   const historyStage = document.getElementById('historyStage');
@@ -773,7 +880,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     if (!chapter || !historyStage || !visual) return;
     const plainDesc = chapter.desc.replace(/<br\s*\/?\s*>/gi, ' ').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
     const emphasis = (chapter.desc.match(/<b>(.*?)<\/b>/i) || [,'山河为证，精神永续。'])[1];
-    document.getElementById('historyKicker').textContent = 'THE LONG MARCH · HISTORICAL VISUAL';
+    document.getElementById('historyKicker').textContent = '长征历史影像';
     document.getElementById('historyCounter').textContent = String(index+1).padStart(2,'0') + ' / ' + String(chapters.length).padStart(2,'0');
     document.getElementById('historyOverline').textContent = chapter.year + ' · ' + chapter.title1;
     document.getElementById('historyTitle').textContent = chapter.title2;
@@ -865,7 +972,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     journeyState.progress=1;routeReveal.value=1;convergenceState.value=1;
     root.classList.add('final-ready');
     root.dataset.chapter='final';
-    document.getElementById('heroEyebrow').textContent='THE LONG MARCH · A NEW CHAPTER';
+    document.getElementById('heroEyebrow').textContent='长征精神 · 时代新程';
     document.getElementById('titleLine1').textContent='赓续长征精神';
     document.getElementById('titleLine2').innerHTML='<span class="accent">智创</span>青春新程';
     document.getElementById('heroSubtitle').innerHTML='从历史深处走来，<b>向时代新程奔赴。</b><br>以青春之智，续写属于新时代的长征答卷。';
@@ -960,7 +1067,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
       root.classList.remove('show-history');
       root.classList.add('final-ready');
       root.dataset.chapter='final';
-      document.getElementById('heroEyebrow').textContent='THE LONG MARCH · A NEW CHAPTER';
+      document.getElementById('heroEyebrow').textContent='长征精神 · 时代新程';
       document.getElementById('titleLine1').textContent='赓续长征精神';
       document.getElementById('titleLine2').innerHTML='<span class="accent">智创</span>青春新程';
       document.getElementById('heroSubtitle').innerHTML='从历史深处走来，<b>向时代新程奔赴。</b><br>以青春之智，续写属于新时代的长征答卷。';
@@ -978,6 +1085,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
   }
 
   function render() {
+    if(window.__openingDisposed)return;
     frame=requestAnimationFrame(render);const t=clock.getElapsedTime();
     pointer.x+=(pointer.tx-pointer.x)*.025;pointer.y+=(pointer.ty-pointer.y)*.025;
     if(followRoute && routeCurve){
@@ -1118,15 +1226,12 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     if(leaving)return;leaving=true;enterButton.disabled=true;root.classList.add('leaving');
     if(journeyTimeline){journeyTimeline.kill();journeyTimeline=null;}
     const gs=window.gsap;
-    if(!gs||reducedMotion||!camera){setTimeout(()=>location.assign(TARGET_URL),500);return;}
+    if(!gs||reducedMotion||!camera){setTimeout(()=>window.enterMuseumExperience(),1800);return;}
     followRoute=false;
-    const tl=gs.timeline({onComplete:()=>location.assign(TARGET_URL)});
-    tl.to(camera.position,{x:-17,y:10,z:-19,duration:1.8,ease:'power4.in'});
-    tl.to(lookTarget,{x:-17,y:9,z:-48,duration:1.8,ease:'power4.in'},'<');
-    tl.to(bloom,{strength:3.0,radius:1,duration:.85,ease:'power2.in'},.35);
-    tl.to('#transition',{clipPath:'circle(150% at 64% 52%)',opacity:1,duration:1.2,ease:'power3.in'},.55);
-    tl.to('#transition .transition-copy',{opacity:1,y:0,duration:.4,ease:'power2.out'},.9);
-    tl.to({}, {duration:.45});
+    const tl=gs.timeline({onComplete:()=>window.enterMuseumExperience()});
+    tl.to('#transition',{opacity:1,duration:1.05,ease:'power2.inOut'},0);
+    tl.to('#transition .transition-copy',{opacity:1,y:0,duration:.65,ease:'power2.out'},.3);
+    tl.to({}, {duration:.75});
   }
   if(!window.__cinematic3DFailed){
     enterButton.addEventListener('click',enterExperience);
@@ -1156,7 +1261,6 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
   const canvas = document.getElementById('scene');
   const skip = document.getElementById('skipButton');
   const enter = document.getElementById('enterButton');
-  const targetUrl = window.CHRONICLE_TARGET_URL || './index.html';
   const chapters = [
     ['1934.10','中央苏区 · 于都','星火初燃','中央红军从中央苏区出发，开启艰苦卓绝的战略转移。','伟大远征 · 从中央苏区出发'],
     ['1934.11—12','湘江战役','血战突围','突破第四道封锁线，队伍付出巨大牺牲。信念在危急关头经受考验。','突破湘江封锁线'],
@@ -1193,7 +1297,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     const cached=(window.LONG_MARCH_IMAGE_CACHE||[])[i];
     if((image.complete&&image.naturalWidth)||(cached&&cached.complete&&cached.naturalWidth))image.onload();
     stage.dataset.particle=visual.mode||'gold';
-    document.getElementById('historyKicker').textContent='THE LONG MARCH · HISTORICAL VISUAL';
+    document.getElementById('historyKicker').textContent='长征历史影像';
     document.getElementById('historyCounter').textContent=String(i+1).padStart(2,'0')+' / 10';
     document.getElementById('historyOverline').textContent=chapter[0]+' · '+chapter[1];
     document.getElementById('historyTitle').textContent=chapter[2];
@@ -1211,7 +1315,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
   function showChapter(i) {
     index = i; window.__journeyMapChapter=i; window.__journeyMapProgress=[.015,.12,.22,.33,.45,.59,.78,.87,.95,1][i]||0; const c = chapters[i];
     if(window.__travelLongMarchMap)window.__travelLongMarchMap(i);
-    setText('heroEyebrow', 'THE LONG MARCH · ' + c[0]);
+    setText('heroEyebrow', '中国工农红军长征 · ' + c[0]);
     setText('titleLine1', c[1]); setText('titleLine2', c[2]);
     document.getElementById('heroSubtitle').innerHTML = c[3] + '<br><b>山河为证，精神永续。</b>';
     setText('currentYear', c[0]); setText('timelineCaption', c[4]);
@@ -1234,7 +1338,7 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     const stage=document.getElementById('historyStage');if(stage){stage.style.opacity='0';stage.setAttribute('aria-hidden','true');}
     root.classList.remove('show-history');
     root.classList.add('fallback-done', 'final-ready'); root.dataset.chapter = 'final';
-    setText('heroEyebrow', 'THE LONG MARCH · A NEW CHAPTER');
+    setText('heroEyebrow', '长征精神 · 时代新程');
     setText('titleLine1', '赓续长征精神');
     document.getElementById('titleLine2').innerHTML = '<span class="accent">智创</span>青春新程';
     document.getElementById('heroSubtitle').innerHTML = '从历史深处走来，<b>向时代新程奔赴。</b><br>以青春之智，续写属于新时代的长征答卷。';
@@ -1264,8 +1368,9 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
     if (!final) { showFinale(); return; }
     root.classList.add('leaving');
     enter.disabled = true;
-    setTimeout(() => { window.location.href = targetUrl; }, 1350);
+    setTimeout(() => { window.enterMuseumExperience(); }, 1800);
   }
+  window.addEventListener('museum-entering',()=>{clearInterval(timer);clearTimeout(chapterTimer)});
   window.addEventListener('cinematic3dfailed', start);
   if (window.__cinematic3DFailed) start();
   skip.addEventListener('click', function () { if (!root.classList.contains('fallback-mode')) return; if (final) start(); else showFinale(); });
@@ -1323,9 +1428,9 @@ window.LONG_MARCH_IMAGE_CACHE = window.LONG_MARCH_VISUALS.map((visual) => {
 <style>
   /* Additional cinema-grade transition states */
   .hero, .topbar, .bottom-meta, .scene-label { will-change: opacity, transform, filter; }
-  #transition { clip-path: circle(0% at 64% 52%); opacity: 0; background: radial-gradient(ellipse at 64% 52%, rgba(255,220,151,.95) 0%, rgba(205,91,51,.86) 14%, rgba(72,20,17,.98) 35%, #050505 72%); transition: none; }
-  #experience.leaving #transition { opacity: 1; }
-  #experience.leaving #transition .transition-copy { opacity: 1; transform: translateY(0); }
+  #transition { opacity: 0; transition: opacity 1.05s ease; }
+  #experience.leaving #transition { opacity: 1 !important; }
+  #experience.leaving #transition .transition-copy { opacity: 1 !important; transform: translateY(0) !important; }
   #experience.leaving .hero, #experience.leaving .topbar, #experience.leaving .bottom-meta, #experience.leaving .scene-label { opacity: 0 !important; transition: opacity .25s ease; }
   .enter-btn:disabled { cursor: wait; opacity: .85; }
 </style>
