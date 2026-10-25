@@ -12,4 +12,8 @@
 
 公开演示地址：
 
+https://findstar818.github.io/shanhe-zhengji/
+
+备用演示地址：
+
 https://spark-route-2026.basicseal67.chatgpt.site/
