@@ -159,3 +159,10 @@
 @keyframes finaleGlow{to{opacity:.42;transform:scale(1.035)}}
 @keyframes finaleReveal{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @media(max-width:900px){.finale-journey{left:7vw;right:7vw;bottom:14vh}.stream-message{max-width:48vw;font-size:10px;padding:7px 9px}.journey-line>div i{width:9px;height:9px}.finale-epilogue b{font-size:clamp(27px,8vw,45px)}.finale-skip{top:2.5vh;right:5vw}}
+
+/* Keep the route title in its own band above the interactive atlas. */
+.route-room .room-heading{top:105px;z-index:6;pointer-events:none}
+.route-room .room-heading h2{line-height:1.08;margin:8px 0 0}
+.route-room .route-layout{top:232px;z-index:2}
+@media(max-width:900px){.route-room .room-heading{top:95px}.route-room .route-layout{top:200px}}
+@media(max-height:760px) and (min-width:901px){.route-room .room-heading{top:92px}.route-room .room-heading h2{font-size:38px;line-height:1.05;margin-top:5px}.route-room .route-layout{top:184px;bottom:98px}.route-room .route-strip{bottom:17px;height:64px}}
