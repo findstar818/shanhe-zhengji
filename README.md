@@ -10,6 +10,6 @@
 
 ## 在线演示
 
-本项目通过 GitHub Pages 自动部署：
+公开演示地址：
 
-https://findstar818.github.io/shanhe-zhengji/
+https://spark-route-2026.basicseal67.chatgpt.site/
